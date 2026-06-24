@@ -1,13 +1,4 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-let genAI = null;
-
-const getGenAI = () => {
-  if (!genAI) {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  }
-  return genAI;
-};
+const { withKeyRotation } = require('./geminiKeyManager');
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -87,69 +78,37 @@ JSON STRUCTURE:
 
 STRICT: Return ONLY JSON.No markdown.No filler.`;
 
-  const modelsToTry = [
-    'gemini-2.5-flash',        // ✅ Confirmed working free tier
-    'gemini-2.0-flash-lite',   // Fast lite (may hit quota)
-    'gemini-2.5-flash-lite',   // Newer lite fallback
-    'gemini-2.5-pro'           // Last resort
-  ];
-  let lastError = null;
-
-  for (const modelName of modelsToTry) {
-    let retryCount = 0;
-    while (retryCount < 2) { // 2 retries per model for faster rotation
-      try {
-        console.log(`🤖[Model: ${ modelName }][Attempt ${ retryCount + 1 }/2] Requesting Roadmap for "${targetRole}"...`);
-        const model = getGenAI().getGenerativeModel({
+  try {
+    const parsed = await withKeyRotation(
+      async (genAI, modelName) => {
+        console.log(`🤖 [Roadmap] Requesting for "${targetRole}" ...`);
+        const model = genAI.getGenerativeModel({
           model: modelName,
-          generationConfig: {
-            responseMimeType: "application/json",
-            temperature: 0.1
-          }
+          generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
         });
-
         const result = await model.generateContent(prompt);
-        const text = result.response.text();
-
-        console.log(`🤖 ${ modelName } responded. Parsing...`);
-        const cleanJson = text.trim();
-        const parsed = JSON.parse(cleanJson);
-
-        if (!parsed.weeks || !Array.isArray(parsed.weeks) || parsed.weeks.length < 4) {
+        const text = result.response.text().trim();
+        const data = JSON.parse(text);
+        if (!data.weeks || !Array.isArray(data.weeks) || data.weeks.length < 4) {
           throw new Error('Roadmap too short or invalid structure');
         }
-
-        return parsed;
-
-      } catch (error) {
-        lastError = error;
-        retryCount++;
-        const isRateLimit = error.message?.includes('429') || error.message?.includes('Too Many Requests');
-        const isHighDemand = error.message?.includes('503') || error.message?.includes('high demand') || error.message?.includes('Service Unavailable');
-        
-        if (retryCount < 3 && (isRateLimit || isHighDemand)) {
-          const waitTime = isRateLimit ? 5000 : 3000;
-          console.warn(`⚠️ ${ modelName } busy/rate-limited (Error: ${error.message}). Waiting ${waitTime/1000}s...`);
-          await sleep(waitTime);
-          continue;
-        }
-        break; 
+        return data;
       }
-    }
-    console.warn(`❌ ${ modelName } failed, trying next option... Error:`, lastError?.message || lastError);
+    );
+    return parsed;
+  } catch (err) {
+    // Final fallback to mock if all keys+models fail
+    console.warn('⚠️ All AI keys/models exhausted, falling back to Mock Roadmap. Error:', err.message);
+    const mockTopics = {
+      'Frontend':  ['HTML & CSS', 'JavaScript Basics', 'React.js', 'State Management', 'API Integration', 'Testing', 'Deployment'],
+      'Backend':   ['Node.js Basics', 'Express.js', 'MongoDB/SQL', 'Authentication', 'API Design', 'System Architecture', 'Cloud/DevOps'],
+      'Fullstack': ['Frontend Foundations', 'React Essentials', 'Node & Express', 'Databases', 'Fullstack Integration', 'Security', 'Deployment']
+    };
+    const topics = mockTopics[targetRole] || mockTopics['Fullstack'];
+    return generateMockRoadmap(targetRole, topics, 8, weeklyHours);
   }
-
-  // Final fallback to mock if all models fail
-  console.warn('⚠️ All AI models failed, falling back to Mock Roadmap.');
-  const mockTopics = {
-        'Frontend': ['HTML & CSS', 'JavaScript Basics', 'React.js', 'State Management', 'API Integration', 'Testing', 'Deployment'],
-        'Backend': ['Node.js Basics', 'Express.js', 'MongoDB/SQL', 'Authentication', 'API Design', 'System Architecture', 'Cloud/DevOps'],
-        'Fullstack': ['Frontend Foundations', 'React Essentials', 'Node & Express', 'Databases', 'Fullstack Integration', 'Security', 'Deployment']
-      };
-
-      const topics = mockTopics[targetRole] || mockTopics['Fullstack'];
-      return generateMockRoadmap(targetRole, topics, 8, weeklyHours);
 };
+
 
 const generateMockRoadmap = (targetRole, topics, totalWeeks, weeklyHours) => {
   const weeks = topics.map((topic, i) => {

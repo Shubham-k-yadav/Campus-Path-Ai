@@ -1,11 +1,7 @@
 const axios = require('axios');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const { withKeyRotation } = require('./geminiKeyManager');
 
 const GITHUB_API_URL = 'https://api.github.com';
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const reviewRepository = async (username, repoName) => {
   const headers = {
@@ -99,41 +95,21 @@ const reviewRepository = async (username, repoName) => {
       Only return the JSON object, nothing else.
     `;
 
-    while (retryCount < MAX_RETRIES) {
-      const currentModelName = modelsToTry[retryCount % modelsToTry.length];
-      try {
-        console.log(`🤖 [Attempt ${retryCount + 1}/${MAX_RETRIES}] Reviewing Repo "${repoName}" using ${currentModelName}...`);
-        const model = genAI.getGenerativeModel({ 
-          model: currentModelName,
-          generationConfig: { responseMimeType: "application/json" }
-        });
+    // 4. Use Gemini to review (with key rotation)
+    const reviewResult = await withKeyRotation(async (genAI, modelName) => {
+      console.log(`🤖 [ReviewService] Reviewing repo "${repoName}" with model="${modelName}"...`);
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        generationConfig: { responseMimeType: 'application/json' }
+      });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('AI failed to generate a valid review format.');
+      return JSON.parse(jsonMatch[0].replace(/```json|```/g, '').trim());
+    });
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
-
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI failed to generate a valid review format.');
-
-        return JSON.parse(jsonMatch[0].replace(/```json|```/g, '').trim());
-
-      } catch (error) {
-        retryCount++;
-        const isRateLimit = error.message?.includes('429') || error.message?.includes('Too Many Requests');
-        const isHighDemand = error.message?.includes('503') || error.message?.includes('high demand');
-        
-        if (retryCount < MAX_RETRIES && (isRateLimit || isHighDemand)) {
-          let waitTime = 10000;
-          const delayMatch = error.message?.match(/"retryDelay":"(\d+)s"/);
-          if (delayMatch) waitTime = (parseInt(delayMatch[1]) + 2) * 1000;
-          else if (isRateLimit) waitTime = 60000;
-
-          console.warn(`⚠️ Review API busy. Retrying in ${waitTime/1000}s...`);
-          await sleep(waitTime);
-          continue;
-        }
-        throw error;
-      }
-    }
+    return reviewResult;
 
   } catch (error) {
     console.error('GitHub Review Service Error:', error.response?.data || error.message);

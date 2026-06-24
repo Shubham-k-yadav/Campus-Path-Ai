@@ -1,22 +1,14 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const pdf = require('pdf-parse');
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const { withKeyRotation } = require('./geminiKeyManager');
 
 const analyzeResume = async (buffer, jobDescription) => {
-  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
-  const MAX_RETRIES = 5;
-  let retryCount = 0;
-
   try {
     console.log('📄 Extracting text from PDF...');
     const data = await pdf(buffer);
     const resumeText = data.text?.trim();
 
     if (!resumeText || resumeText.length < 50) {
-      throw new Error('Could not extract enough text from the PDF. Please ensure it is not an image-based PDF or a scanned document.');
+      throw new Error('Could not extract enough text from the PDF. Please ensure it is not an image-based PDF.');
     }
 
     console.log(`✅ Extracted ${resumeText.length} characters of resume text.`);
@@ -42,55 +34,27 @@ const analyzeResume = async (buffer, jobDescription) => {
       Only return the JSON object, no other text.
     `;
 
-    while (retryCount < MAX_RETRIES) {
-      const currentModelName = modelsToTry[retryCount % modelsToTry.length];
-      try {
-        console.log(`🤖 [Attempt ${retryCount + 1}/${MAX_RETRIES}] Requesting ATS Analysis using ${currentModelName}...`);
-        const model = genAI.getGenerativeModel({ 
-          model: currentModelName,
-          generationConfig: { 
-            responseMimeType: "application/json",
-            temperature: 0.1 
-          }
-        });
+    const result = await withKeyRotation(async (genAI, modelName) => {
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+      });
+      const res = await model.generateContent(prompt);
+      const text = res.response.text();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('AI failed to generate a valid analysis format.');
+      const parsed = JSON.parse(jsonMatch[0].replace(/```json|```/g, '').trim());
+      return {
+        score: typeof parsed.score === 'number' ? parsed.score : 0,
+        matchExplanation: parsed.matchExplanation || 'No summary available.',
+        missingKeywords: Array.isArray(parsed.missingKeywords) ? parsed.missingKeywords : [],
+        improvementTips: Array.isArray(parsed.improvementTips) ? parsed.improvementTips : [],
+        technicalGapAnalysis: parsed.technicalGapAnalysis || 'No gap analysis available.'
+      };
+    });
 
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
+    return result;
 
-        // Robust JSON extraction
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) throw new Error('AI failed to generate a valid analysis format.');
-        
-        const cleanJson = jsonMatch[0].replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(cleanJson);
-        
-        // Defensive checks for expected fields
-        return {
-          score: typeof parsed.score === 'number' ? parsed.score : 0,
-          matchExplanation: parsed.matchExplanation || 'No summary available.',
-          missingKeywords: Array.isArray(parsed.missingKeywords) ? parsed.missingKeywords : [],
-          improvementTips: Array.isArray(parsed.improvementTips) ? parsed.improvementTips : [],
-          technicalGapAnalysis: parsed.technicalGapAnalysis || 'No gap analysis available.'
-        };
-        
-      } catch (error) {
-        retryCount++;
-        const isRateLimit = error.message?.includes('429') || error.message?.includes('Too Many Requests');
-        const isHighDemand = error.message?.includes('503') || error.message?.includes('high demand');
-        
-        if (retryCount < MAX_RETRIES && (isRateLimit || isHighDemand)) {
-          let waitTime = 15000;
-          const delayMatch = error.message?.match(/"retryDelay":"(\d+)s"/);
-          if (delayMatch) waitTime = (parseInt(delayMatch[1]) + 2) * 1000;
-          else if (isRateLimit) waitTime = 30000; // 30s for rate limit
-
-          console.warn(`⚠️ Resume AI busy. Retrying in ${waitTime/1000}s...`);
-          await sleep(waitTime);
-          continue;
-        }
-        throw error;
-      }
-    }
   } catch (error) {
     console.error('❌ Resume analysis service error:', error.message);
     throw new Error(error.message || 'Failed to analyze resume. Please try again.');
@@ -98,10 +62,6 @@ const analyzeResume = async (buffer, jobDescription) => {
 };
 
 const conductMockInterview = async ({ roadmapContext, messages, targetRole }) => {
-  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
-  const MAX_RETRIES = 3; // Lower retries for chat interaction to preserve UX
-  let retryCount = 0;
-
   try {
     const systemPrompt = `
       You are an elite Senior Technical Interviewer for a Top Tier Tech Company.
@@ -121,24 +81,12 @@ const conductMockInterview = async ({ roadmapContext, messages, targetRole }) =>
       ${JSON.stringify(messages || [])}
     `;
 
-    while (retryCount < MAX_RETRIES) {
-      const currentModelName = modelsToTry[retryCount % modelsToTry.length];
-      try {
-        console.log(`🤖 Interview Request [Attempt ${retryCount + 1}] for: ${targetRole} using ${currentModelName}`);
-        const model = genAI.getGenerativeModel({ model: currentModelName });
-        const result = await model.generateContent(systemPrompt);
-        return result.response.text();
-      } catch (error) {
-        retryCount++;
-        const isRateLimit = error.message?.includes('429') || error.message?.includes('Too Many Requests');
-        if (retryCount < MAX_RETRIES && isRateLimit) {
-          console.warn('⚠️ Interview API rate limited. Retrying in 5s...');
-          await sleep(5000);
-          continue;
-        }
-        throw error;
-      }
-    }
+    return await withKeyRotation(async (genAI, modelName) => {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(systemPrompt);
+      return result.response.text();
+    });
+
   } catch (error) {
     console.error('❌ Interview service error:', error);
     throw new Error('Interview simulation interrupted. Please check your connection and try again.');
@@ -146,10 +94,6 @@ const conductMockInterview = async ({ roadmapContext, messages, targetRole }) =>
 };
 
 const generateBio = async ({ role, skills, experience, niche }) => {
-  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
-  let retryCount = 0;
-  const MAX_RETRIES = 3;
-
   const prompt = `
     Generate a professional, compelling developer bio for a portfolio website.
     
@@ -170,22 +114,11 @@ const generateBio = async ({ role, skills, experience, niche }) => {
     Return ONLY the bio text, nothing else. No quotes around it.
   `;
 
-  while (retryCount < MAX_RETRIES) {
-    const currentModelName = modelsToTry[retryCount % modelsToTry.length];
-    try {
-      const model = genAI.getGenerativeModel({ model: currentModelName });
-      const result = await model.generateContent(prompt);
-      return result.response.text().trim().replace(/^["']|["']$/g, '');
-    } catch (error) {
-      retryCount++;
-      const isRateLimit = error.message?.includes('429');
-      if (retryCount < MAX_RETRIES && isRateLimit) {
-        await sleep(5000);
-        continue;
-      }
-      throw error;
-    }
-  }
+  return await withKeyRotation(async (genAI, modelName) => {
+    const model = genAI.getGenerativeModel({ model: modelName });
+    const result = await model.generateContent(prompt);
+    return result.response.text().trim().replace(/^[\"']|[\"']$/g, '');
+  });
 };
 
 module.exports = { analyzeResume, conductMockInterview, generateBio };
