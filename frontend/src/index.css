@@ -140,8 +140,27 @@
   }
 
   html {
-    scroll-behavior: smooth;
     background-color: var(--color-background);
+  }
+
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis-scrolling iframe {
+    pointer-events: none;
   }
 
   body {
