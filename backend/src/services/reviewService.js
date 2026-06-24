@@ -13,7 +13,7 @@ const reviewRepository = async (username, repoName) => {
     Accept: 'application/vnd.github.v3+json'
   };
 
-  const modelsToTry = ['gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   const MAX_RETRIES = 5;
   let retryCount = 0;
 

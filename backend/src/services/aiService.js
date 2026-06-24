@@ -6,7 +6,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const analyzeResume = async (buffer, jobDescription) => {
-  const modelsToTry = ['gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   const MAX_RETRIES = 5;
   let retryCount = 0;
 
@@ -98,7 +98,7 @@ const analyzeResume = async (buffer, jobDescription) => {
 };
 
 const conductMockInterview = async ({ roadmapContext, messages, targetRole }) => {
-  const modelsToTry = ['gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   const MAX_RETRIES = 3; // Lower retries for chat interaction to preserve UX
   let retryCount = 0;
 
@@ -146,7 +146,7 @@ const conductMockInterview = async ({ roadmapContext, messages, targetRole }) =>
 };
 
 const generateBio = async ({ role, skills, experience, niche }) => {
-  const modelsToTry = ['gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   let retryCount = 0;
   const MAX_RETRIES = 3;
 

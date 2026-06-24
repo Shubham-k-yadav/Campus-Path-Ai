@@ -12,7 +12,7 @@ const getGenAI = () => {
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const generateRoadmap = async ({ targetRole, githubAnalysis, manualSkills, weeklyHours, proficiency }) => {
-  const modelName = 'gemini-flash-lite-latest';
+  const modelName = 'gemini-2.5-flash';
   const MAX_RETRIES = 5;
   let retryCount = 0;
 
@@ -88,10 +88,10 @@ JSON STRUCTURE:
 STRICT: Return ONLY JSON.No markdown.No filler.`;
 
   const modelsToTry = [
-    'gemini-flash-lite-latest',
-    'gemini-2.5-flash-lite',
-    'gemini-2.5-flash',
-    'gemini-flash-latest'
+    'gemini-2.5-flash',        // ✅ Confirmed working free tier
+    'gemini-2.0-flash-lite',   // Fast lite (may hit quota)
+    'gemini-2.5-flash-lite',   // Newer lite fallback
+    'gemini-2.5-pro'           // Last resort
   ];
   let lastError = null;
 
