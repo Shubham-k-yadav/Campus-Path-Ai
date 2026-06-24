@@ -159,14 +159,14 @@ export default function Portfolio() {
         <div className="min-h-screen bg-background text-foreground py-8 sm:py-16">
           <div className="flex flex-col max-w-4xl mx-auto px-4 sm:px-8 space-y-12 w-full">
             {/* Hero */}
-            <div className="flex justify-between items-start border-b border-border/45 pb-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-black tracking-tight text-foreground">{d.hero.name}</h2>
-                <p className="text-[10px] font-black uppercase tracking-[0.25em]" style={{ color: a.hex }}>{d.hero.role}</p>
-                <p className="text-xs text-muted-foreground italic font-medium">"{d.hero.tagline}"</p>
+            <div className="flex flex-col-reverse sm:flex-row justify-between items-start gap-4 border-b border-border/45 pb-6">
+              <div className="space-y-2 min-w-0 flex-1">
+                <h2 className="text-2xl font-black tracking-tight text-foreground break-words">{d.hero.name}</h2>
+                <p className="text-[10px] font-black uppercase tracking-[0.25em] break-words" style={{ color: a.hex }}>{d.hero.role}</p>
+                <p className="text-xs text-muted-foreground italic font-medium break-words">"{d.hero.tagline}"</p>
               </div>
             {d.hero.profileImage && (
-              <div className="w-16 h-16 rounded-full overflow-hidden border border-border shadow-sm">
+              <div className="w-16 h-16 rounded-full overflow-hidden border border-border shadow-sm flex-shrink-0">
                 <img src={d.hero.profileImage} className="w-full h-full object-cover" alt={d.hero.name} />
               </div>
             )}
@@ -190,16 +190,16 @@ export default function Portfolio() {
                 <h4 className="text-[10px] font-black tracking-widest text-muted-foreground uppercase tracking-[0.2em]">// Selected Work</h4>
                 <div className="space-y-4">
                   {d.projects.map((p, idx) => (
-                    <div key={idx} className="group border-l border-border/50 pl-4 py-1 space-y-1.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-black group-hover:text-primary transition-colors">{p.name}</span>
-                        <div className="flex gap-2">
+                    <div key={idx} className="group border-l border-border/50 pl-4 py-1 space-y-1.5 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-black group-hover:text-primary transition-colors break-words">{p.name}</span>
+                        <div className="flex gap-2 shrink-0">
                           {p.github && <a href={getSocialLink('github', p.github)} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground"><Github size={11} /></a>}
                           {p.link && <a href={getSocialLink('website', p.link)} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground"><ExternalLink size={11} /></a>}
                         </div>
                       </div>
-                      <p className="text-[10px] text-muted-foreground leading-relaxed">{p.desc}</p>
-                      <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-wider">{p.tech}</span>
+                      <p className="text-[10px] text-muted-foreground leading-relaxed break-words">{p.desc}</p>
+                      <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-wider break-words">{p.tech}</span>
                     </div>
                   ))}
                 </div>
@@ -307,12 +307,12 @@ export default function Portfolio() {
           </div>
 
           {/* Footer Contact */}
-          <div className="border-t border-border/40 pt-6 flex flex-wrap gap-4 text-[9px] font-black uppercase tracking-wider text-muted-foreground">
-            {d.contact.email && <a href={getSocialLink('email', d.contact.email)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground"><Mail size={10} style={{ color: a.hex }} /> {d.contact.email}</a>}
-            {d.contact.github && <a href={getSocialLink('github', d.contact.github)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground"><Github size={10} style={{ color: a.hex }} /> {d.contact.github}</a>}
-            {d.contact.linkedin && <a href={getSocialLink('linkedin', d.contact.linkedin)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground"><Linkedin size={10} style={{ color: a.hex }} /> {d.contact.linkedin}</a>}
-            {d.contact.twitter && <a href={getSocialLink('twitter', d.contact.twitter)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground"><Twitter size={10} style={{ color: a.hex }} /> {d.contact.twitter}</a>}
-            {d.contact.website && <a href={getSocialLink('website', d.contact.website)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground"><Globe size={10} style={{ color: a.hex }} /> {d.contact.website}</a>}
+          <div className="border-t border-border/40 pt-6 flex flex-wrap gap-4 text-[9px] font-black uppercase tracking-wider text-muted-foreground break-words">
+            {d.contact.email && <a href={getSocialLink('email', d.contact.email)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground break-all"><Mail size={10} style={{ color: a.hex }} /> {d.contact.email}</a>}
+            {d.contact.github && <a href={getSocialLink('github', d.contact.github)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground break-all"><Github size={10} style={{ color: a.hex }} /> {d.contact.github}</a>}
+            {d.contact.linkedin && <a href={getSocialLink('linkedin', d.contact.linkedin)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground break-all"><Linkedin size={10} style={{ color: a.hex }} /> {d.contact.linkedin}</a>}
+            {d.contact.twitter && <a href={getSocialLink('twitter', d.contact.twitter)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground break-all"><Twitter size={10} style={{ color: a.hex }} /> {d.contact.twitter}</a>}
+            {d.contact.website && <a href={getSocialLink('website', d.contact.website)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground break-all"><Globe size={10} style={{ color: a.hex }} /> {d.contact.website}</a>}
             {d.contact.leetcode && <a href={getSocialLink('leetcode', d.contact.leetcode)} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-foreground"><Hash size={10} style={{ color: a.hex }} /> LeetCode</a>}
           </div>
           </div>
@@ -329,11 +329,11 @@ export default function Portfolio() {
           <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none z-10 opacity-30" />
 
           {/* Header */}
-          <div className="flex justify-between items-start border-b border-cyan-500/20 pb-4">
-            <div className="space-y-1">
+          <div className="flex flex-col-reverse sm:flex-row justify-between items-start gap-4 border-b border-cyan-500/20 pb-4">
+            <div className="space-y-1 min-w-0 flex-1">
               <div className="text-[9px] opacity-40">SYSTEM://PORTFOLIO_NODE</div>
-              <h2 className="text-xl font-black tracking-widest uppercase text-white" style={{ textShadow: `0 0 10px ${a.glow}` }}>{d.hero.name}</h2>
-              <div className="text-[9px] font-bold uppercase tracking-widest animate-pulse" style={{ color: a.hex }}>&gt; {d.hero.role}</div>
+              <h2 className="text-xl font-black tracking-widest uppercase text-white break-words" style={{ textShadow: `0 0 10px ${a.glow}` }}>{d.hero.name}</h2>
+              <div className="text-[9px] font-bold uppercase tracking-widest animate-pulse break-words" style={{ color: a.hex }}>&gt; {d.hero.role}</div>
             </div>
             {d.hero.profileImage ? (
               <div className="w-12 h-12 border-2 relative shrink-0" style={{ borderColor: a.hex, boxShadow: `0 0 10px ${a.glow}` }}>
@@ -341,7 +341,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 border border-black/40" />
               </div>
             ) : (
-              <div className="w-10 h-10 border border-cyan-500/40 flex items-center justify-center text-xs text-cyan-400">[0x{d.hero.name[0]}]</div>
+              <div className="w-10 h-10 border border-cyan-500/40 flex items-center justify-center text-xs text-cyan-400 shrink-0">[0x{d.hero.name[0]}]</div>
             )}
           </div>
 
@@ -390,14 +390,14 @@ export default function Portfolio() {
               <div className="text-[10px] text-white/50 uppercase tracking-widest">// sh execute_exploits.sh</div>
               <div className="space-y-2">
                 {d.projects.map((p, idx) => (
-                  <div key={idx} className="p-2.5 border border-cyan-500/20 bg-slate-950/60 rounded flex justify-between items-start gap-4">
-                    <div className="space-y-1">
-                      <div className="text-[10.5px] font-bold text-white flex items-center gap-1.5">
-                        <Terminal size={10} style={{ color: a.hex }} />
+                  <div key={idx} className="p-2.5 border border-cyan-500/20 bg-slate-950/60 rounded flex justify-between items-start gap-4 min-w-0">
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <div className="text-[10.5px] font-bold text-white flex flex-wrap items-center gap-1.5 break-words">
+                        <Terminal size={10} className="shrink-0" style={{ color: a.hex }} />
                         {p.name}
                       </div>
-                      <p className="text-[9.5px] text-slate-400 leading-normal">{p.desc}</p>
-                      <div className="text-[7.5px] font-black uppercase text-cyan-500/70">{p.tech}</div>
+                      <p className="text-[9.5px] text-slate-400 leading-normal break-words">{p.desc}</p>
+                      <div className="text-[7.5px] font-black uppercase text-cyan-500/70 break-words">{p.tech}</div>
                     </div>
                     <div className="flex gap-1.5 shrink-0">
                       {p.github && <a href={getSocialLink('github', p.github)} target="_blank" rel="noreferrer" className="p-1 hover:bg-cyan-950/40 border border-cyan-500/20 text-cyan-300 rounded"><Github size={10} /></a>}
@@ -461,14 +461,14 @@ export default function Portfolio() {
           </div>
 
           {/* Contact Prompt */}
-          <div className="border-t border-cyan-500/20 pt-4 text-[9.5px] opacity-75">
-            <div>developer@campuspath:~$ mail -s "inquiry" {d.contact.email}</div>
+          <div className="border-t border-cyan-500/20 pt-4 text-[9.5px] opacity-75 break-words">
+            <div className="break-all">developer@campuspath:~$ mail -s "inquiry" {d.contact.email}</div>
             <div className="mt-1 flex flex-wrap gap-4 text-cyan-300">
-              {d.contact.email && <a href={getSocialLink('email', d.contact.email)} target="_blank" rel="noreferrer" className="hover:underline">Mail: {d.contact.email}</a>}
-              {d.contact.github && <a href={getSocialLink('github', d.contact.github)} target="_blank" rel="noreferrer" className="hover:underline">GitHub: {d.contact.github}</a>}
-              {d.contact.linkedin && <a href={getSocialLink('linkedin', d.contact.linkedin)} target="_blank" rel="noreferrer" className="hover:underline">LinkedIn: {d.contact.linkedin}</a>}
-              {d.contact.twitter && <a href={getSocialLink('twitter', d.contact.twitter)} target="_blank" rel="noreferrer" className="hover:underline">Twitter: {d.contact.twitter}</a>}
-              {d.contact.website && <a href={getSocialLink('website', d.contact.website)} target="_blank" rel="noreferrer" className="hover:underline">Web: {d.contact.website}</a>}
+              {d.contact.email && <a href={getSocialLink('email', d.contact.email)} target="_blank" rel="noreferrer" className="hover:underline break-all">Mail: {d.contact.email}</a>}
+              {d.contact.github && <a href={getSocialLink('github', d.contact.github)} target="_blank" rel="noreferrer" className="hover:underline break-all">GitHub: {d.contact.github}</a>}
+              {d.contact.linkedin && <a href={getSocialLink('linkedin', d.contact.linkedin)} target="_blank" rel="noreferrer" className="hover:underline break-all">LinkedIn: {d.contact.linkedin}</a>}
+              {d.contact.twitter && <a href={getSocialLink('twitter', d.contact.twitter)} target="_blank" rel="noreferrer" className="hover:underline break-all">Twitter: {d.contact.twitter}</a>}
+              {d.contact.website && <a href={getSocialLink('website', d.contact.website)} target="_blank" rel="noreferrer" className="hover:underline break-all">Web: {d.contact.website}</a>}
             </div>
           </div>
           </div>
@@ -673,17 +673,17 @@ export default function Portfolio() {
             <div className="space-y-6">
               {/* Header profile */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-5 border-b border-white/10 w-full">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
                   {d.hero.profileImage ? (
-                    <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/20">
+                    <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/20 flex-shrink-0">
                       <img src={d.hero.profileImage} className="w-full h-full object-cover" alt="" />
                     </div>
                   ) : (
-                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center font-bold text-xs">{d.hero.name[0]}</div>
+                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center font-bold text-xs flex-shrink-0">{d.hero.name[0]}</div>
                   )}
-                  <div>
-                    <h3 className="text-xs font-black text-white">{d.hero.name}</h3>
-                    <span className="text-[8.5px] uppercase tracking-wider block" style={{ color: a.hex }}>{d.hero.role}</span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs font-black text-white break-words">{d.hero.name}</h3>
+                    <span className="text-[8.5px] uppercase tracking-wider block break-words" style={{ color: a.hex }}>{d.hero.role}</span>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -793,18 +793,18 @@ export default function Portfolio() {
                   <span className="text-[8px] font-black uppercase tracking-wider text-white/40">Selected Projects</span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {d.projects.map((p, idx) => (
-                      <div key={idx} className="p-2.5 rounded-xl bg-white/[0.01] border border-white/5 flex flex-col justify-between min-h-[75px] hover:border-white/15 transition-all">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <div className="text-[9.5px] font-black text-white">{p.name}</div>
-                            <p className="text-[8.5px] text-white/60 line-clamp-1 mt-0.5">{p.desc}</p>
+                      <div key={idx} className="p-2.5 rounded-xl bg-white/[0.01] border border-white/5 flex flex-col justify-between min-h-[75px] hover:border-white/15 transition-all min-w-0">
+                        <div className="flex justify-between items-start min-w-0">
+                          <div className="min-w-0 flex-1 mr-2">
+                            <div className="text-[9.5px] font-black text-white break-words">{p.name}</div>
+                            <p className="text-[8.5px] text-white/60 line-clamp-1 mt-0.5 break-words">{p.desc}</p>
                           </div>
                           <div className="flex gap-1.5 shrink-0 mt-0.5">
                             {p.github && <a href={getSocialLink('github', p.github)} target="_blank" rel="noreferrer" className="text-white/60 hover:text-white"><Github size={10} /></a>}
                             {p.link && <a href={getSocialLink('website', p.link)} target="_blank" rel="noreferrer" className="text-white/60 hover:text-white"><ExternalLink size={10} /></a>}
                           </div>
                         </div>
-                        <span className="text-[7px] font-bold text-white/40 uppercase mt-2">{p.tech}</span>
+                        <span className="text-[7px] font-bold text-white/40 uppercase mt-2 break-all">{p.tech}</span>
                       </div>
                     ))}
                   </div>
@@ -914,17 +914,17 @@ export default function Portfolio() {
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-400">// Selected Endeavors</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {d.projects.map((p, idx) => (
-                    <div key={idx} className="p-5 rounded-3xl bg-slate-900/40 border border-white/[0.04] backdrop-blur-xl hover:border-white/[0.08] shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[140px]">
-                      <div>
-                        <div className="flex justify-between items-start gap-2">
-                          <h4 className="text-xs font-black text-white">{p.name}</h4>
-                          <span className="text-[8px] font-bold text-cyan-400/80 uppercase bg-cyan-500/5 px-2 py-0.5 rounded-full border border-cyan-500/10">{p.tech.split(',')[0]}</span>
+                    <div key={idx} className="p-5 rounded-3xl bg-slate-900/40 border border-white/[0.04] backdrop-blur-xl hover:border-white/[0.08] shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[140px] min-w-0">
+                      <div className="min-w-0">
+                        <div className="flex justify-between items-start gap-2 min-w-0">
+                          <h4 className="text-xs font-black text-white break-words min-w-0 flex-1">{p.name}</h4>
+                          <span className="text-[8px] font-bold text-cyan-400/80 uppercase bg-cyan-500/5 px-2 py-0.5 rounded-full border border-cyan-500/10 shrink-0">{(p.tech || '').split(',')[0]}</span>
                         </div>
-                        <p className="text-[10.5px] text-slate-400 leading-relaxed mt-2 line-clamp-2">{p.desc}</p>
+                        <p className="text-[10.5px] text-slate-400 leading-relaxed mt-2 line-clamp-2 break-words">{p.desc}</p>
                       </div>
-                      <div className="flex items-center justify-between pt-4 border-t border-white/[0.03] mt-4 font-mono">
-                        <span className="text-[7.5px] font-bold text-slate-500 uppercase tracking-wider">{p.tech}</span>
-                        <div className="flex gap-2">
+                      <div className="flex items-center justify-between pt-4 border-t border-white/[0.03] mt-4 font-mono min-w-0 gap-2">
+                        <span className="text-[7.5px] font-bold text-slate-500 uppercase tracking-wider truncate max-w-[65%]" title={p.tech}>{p.tech}</span>
+                        <div className="flex gap-2 shrink-0">
                           {p.github && (
                             <a href={getSocialLink('github', p.github)} target="_blank" rel="noreferrer" className="p-1.5 rounded-xl bg-white/[0.03] border border-white/[0.05] text-slate-400 hover:text-white transition-colors">
                               <Github size={11} />
@@ -1066,20 +1066,20 @@ export default function Portfolio() {
   );
 
   return (
-    <div className={`min-h-screen ${previewBg} ${previewText} no-scrollbar pb-24`} style={{ fontFamily: previewFont }}>
+    <div className={`min-h-screen ${previewBg} ${previewText} overflow-x-hidden w-full relative pb-24`} style={{ fontFamily: previewFont }}>
       {/* Actions / Floating Nav */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-3 bg-card/85 backdrop-blur-xl border border-border/70 p-2.5 rounded-2xl shadow-2xl">
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1.5 sm:gap-3 bg-card/85 backdrop-blur-xl border border-border/70 p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl shadow-2xl w-[90%] sm:w-auto max-w-sm sm:max-w-none justify-center">
         {userId ? (
-          <Link to="/" className="flex items-center gap-2 px-5 py-3 bg-muted/65 border border-border/60 text-muted-foreground hover:text-foreground hover:bg-card rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
-            <Zap size={14} className="text-primary" /> Build Your Own
+          <Link to="/" className="flex items-center gap-1.5 px-3 sm:px-5 py-2 sm:py-3 bg-muted/65 border border-border/60 text-muted-foreground hover:text-foreground hover:bg-card rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-widest transition-all whitespace-nowrap">
+            <Zap size={12} className="text-primary" /> Build Your Own
           </Link>
         ) : (
-          <Link to="/portfolio-builder" className="p-3 rounded-xl bg-muted/65 border border-border/60 text-muted-foreground hover:text-foreground hover:bg-card transition-all">
-            <ArrowLeft size={16} />
+          <Link to="/portfolio-builder" className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-muted/65 border border-border/60 text-muted-foreground hover:text-foreground hover:bg-card transition-all">
+            <ArrowLeft size={14} className="sm:size-4" />
           </Link>
         )}
-        <button onClick={sharePortfolio} className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md shadow-primary/20" style={{ backgroundColor: aHex }}>
-          <Share2 size={14} /> Share Portfolio
+        <button onClick={sharePortfolio} className="flex items-center gap-1.5 px-3 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-widest hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md shadow-primary/20 whitespace-nowrap" style={{ backgroundColor: aHex }}>
+          <Share2 size={12} /> Share Portfolio
         </button>
       </div>
 
