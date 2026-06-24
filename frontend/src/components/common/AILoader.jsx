@@ -75,7 +75,7 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[999] bg-[#070913] text-[#F8FAFC] flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden font-sans select-none">
+    <div className="fixed inset-0 z-[999] bg-[#070913] text-[#F8FAFC] flex flex-col items-center justify-start md:justify-center p-4 sm:p-6 overflow-y-auto no-scrollbar font-sans select-none py-8 md:py-0">
       
       {/* Background Futuristic Grid Lines & Glowing Orbs */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
@@ -84,13 +84,13 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full blur-[120px] bg-[#34A853]/20 animate-pulse" style={{ animationDuration: '10s' }} />
       </div>
 
-      <div className="w-full max-w-4xl flex flex-col lg:flex-row gap-8 lg:gap-12 items-center justify-center relative z-10">
+      <div className="w-full max-w-4xl flex flex-col lg:flex-row gap-6 lg:gap-12 items-center justify-center relative z-10 my-auto">
         
         {/* Left Column: Holographic Glowing Spinner/Core & Info */}
-        <div className="flex-1 flex flex-col items-center text-center lg:text-left lg:items-start space-y-6">
+        <div className="flex-1 flex flex-col items-center text-center lg:text-left lg:items-start space-y-4 sm:space-y-6">
           
           {/* Neural Network Glowing Icon Sphere */}
-          <div className="relative w-36 h-36 flex items-center justify-center">
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center">
             {/* Spinning glowing outer border */}
             <motion.div 
               animate={{ rotate: 360 }}
@@ -103,32 +103,32 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
               transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
               className="absolute inset-2 rounded-full border border-dotted border-[#34A853]/40"
             >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#34A853] shadow-md shadow-[#34A853]" />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#4285F4] shadow-md shadow-[#4285F4]" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#34A853] shadow-md shadow-[#34A853]" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#4285F4] shadow-md shadow-[#4285F4]" />
             </motion.div>
 
             {/* Glowing Inner Core */}
             <motion.div 
               animate={{ scale: [1, 1.08, 1] }}
               transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              className="w-24 h-24 rounded-full bg-gradient-to-tr from-[#4285F4]/20 via-[#EA4335]/20 to-[#FBBC05]/20 border border-white/10 flex items-center justify-center relative shadow-[0_0_50px_rgba(66,133,244,0.15)]"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-[#4285F4]/20 via-[#EA4335]/20 to-[#FBBC05]/20 border border-white/10 flex items-center justify-center relative shadow-[0_0_50px_rgba(66,133,244,0.15)]"
             >
               <div className="absolute inset-0 rounded-full bg-[#4285F4]/5 filter blur-md" />
-              <Brain className="w-10 h-10 text-[#4285F4] relative z-10 animate-pulse" />
+              <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-[#4285F4] relative z-10 animate-pulse" />
             </motion.div>
           </div>
 
           {/* Heading Description */}
-          <div className="space-y-3">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-[#4285F4]/10 border border-[#4285F4]/30 text-[#4285F4] leading-none">
-              <Sparkles size={11} className="animate-spin text-[#FBBC05]" /> AI Engine Active
+          <div className="space-y-2 sm:space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest bg-[#4285F4]/10 border border-[#4285F4]/30 text-[#4285F4] leading-none">
+              <Sparkles size={10} className="animate-spin text-[#FBBC05]" /> AI Engine Active
             </span>
             
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white/90 to-[#9AA0A6] bg-clip-text text-transparent">
+            <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white/90 to-[#9AA0A6] bg-clip-text text-transparent">
               Mapping your <span className="bg-gradient-to-r from-[#4285F4] via-[#EA4335] via-[#FBBC05] to-[#34A853] bg-clip-text text-transparent">{targetRole}</span> career path
             </h2>
             
-            <p className="text-xs sm:text-sm text-[#9AA0A6] max-w-md font-semibold leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#9AA0A6] max-w-sm sm:max-w-md font-semibold leading-relaxed">
               {githubUsername 
                 ? `Syncing repositories for "${githubUsername}" and generating a personalized, Git-verified roadmap blueprint.`
                 : `Analyzing skill parameters and constructing a custom week-by-week curriculum.`
@@ -137,10 +137,10 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
           </div>
 
           {/* Interactive Live Status Indicator */}
-          <div className="w-full max-w-sm flex items-center gap-3 p-3.5 rounded-2xl bg-[#0F1222] border border-white/5 shadow-inner">
-            <RefreshCw size={15} className="animate-spin text-[#4285F4] shrink-0" />
+          <div className="w-full max-w-xs sm:max-w-sm flex items-center gap-3 p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#0F1222] border border-white/5 shadow-inner">
+            <RefreshCw size={13} className="animate-spin text-[#4285F4] shrink-0" />
             <div className="flex-1 min-w-0 text-left">
-              <div className="text-[10px] font-black text-[#5F6368] uppercase tracking-wider">Current Operation</div>
+              <div className="text-[9px] sm:text-[10px] font-black text-[#5F6368] uppercase tracking-wider">Current Operation</div>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentStepIdx}
@@ -158,15 +158,15 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
         </div>
 
         {/* Right Column: Steps Progress Checklist & Live Terminal Output */}
-        <div className="w-full lg:w-[420px] flex flex-col gap-5 shrink-0">
+        <div className="w-full lg:w-[420px] flex flex-col gap-4 sm:gap-5 shrink-0">
           
           {/* Steps Progress Check List */}
-          <div className="p-5 rounded-2xl bg-[#0F1222] border border-white/5 shadow-md flex flex-col gap-4">
-            <div className="text-[10px] font-black text-[#5F6368] uppercase tracking-widest border-b border-white/5 pb-2.5">
+          <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#0F1222] border border-white/5 shadow-md flex flex-col gap-3 sm:gap-4">
+            <div className="text-[9px] sm:text-[10px] font-black text-[#5F6368] uppercase tracking-widest border-b border-white/5 pb-2">
               Synthesis Progression
             </div>
             
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2.5 sm:gap-3">
               {STEPS.map((s, idx) => {
                 const isCompleted = idx < currentStepIdx;
                 const isActive = idx === currentStepIdx;
@@ -180,15 +180,15 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
                     }`}
                   >
                     {isCompleted ? (
-                      <div className="w-5 h-5 rounded-full bg-[#34A853]/10 border border-[#34A853]/40 flex items-center justify-center text-[#34A853] shrink-0 shadow-sm shadow-[#34A853]/5">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#34A853]/10 border border-[#34A853]/40 flex items-center justify-center text-[#34A853] shrink-0 shadow-sm shadow-[#34A853]/5">
                         <CheckCircle size={12} strokeWidth={3} />
                       </div>
                     ) : isActive ? (
-                      <div className="w-5 h-5 rounded-full bg-[#4285F4]/10 border border-[#4285F4]/60 flex items-center justify-center text-[#4285F4] shrink-0 animate-pulse shadow-sm shadow-[#4285F4]/5">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#4285F4]/10 border border-[#4285F4]/60 flex items-center justify-center text-[#4285F4] shrink-0 animate-pulse shadow-sm shadow-[#4285F4]/5">
                         <Circle size={10} fill="currentColor" />
                       </div>
                     ) : (
-                      <div className="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#5F6368] shrink-0">
+                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#5F6368] shrink-0">
                         <Circle size={8} />
                       </div>
                     )}
@@ -196,7 +196,7 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
                     <div className="flex-1 min-w-0 text-left">
                       <div className="flex items-center gap-1.5">
                         <Icon size={12} className={isActive ? 'text-[#4285F4]' : isCompleted ? 'text-[#34A853]' : 'text-[#5F6368]'} />
-                        <span className={`text-[11px] font-black uppercase tracking-wider ${
+                        <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-wider ${
                           isActive ? 'text-white' : 'text-[#F8FAFC]'
                         }`}>
                           {s.label}
@@ -210,7 +210,7 @@ export default function AILoader({ targetRole = 'Software Engineer', githubUsern
           </div>
 
           {/* Simulated Terminal Output box */}
-          <div className="p-4 rounded-2xl bg-[#090B15] border border-white/5 shadow-inner flex flex-col font-mono text-[9px]">
+          <div className="hidden md:flex p-4 rounded-xl sm:rounded-2xl bg-[#090B15] border border-white/5 shadow-inner flex flex-col font-mono text-[9px]">
             <div className="flex items-center justify-between text-[#5F6368] border-b border-white/5 pb-2 mb-2 font-bold select-none">
               <span className="flex items-center gap-1.5 uppercase tracking-wide">
                 <Terminal size={10} className="text-[#FBBC05]" /> Console Logs
