@@ -1,0 +1,11 @@
+node_modules/
+.env
+*.log
+dist/
+.DS_Store
+.vscode/
+backend/openai_error.txt
+backend/gemini_error.txt
+backend/list-models.js
+backend/test-ai.js
+frontend/replace_colors.cjs

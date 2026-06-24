@@ -1,0 +1,607 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* Brand Specific Palette Mapping - Backwards Compatibility */
+  --color-wisteria-blue: #1A73E8;
+  --color-mint-leaf: #34A853;
+  --color-jasmine: #FBBC05;
+  --color-tangerine-dream: #FBBC05;
+  --color-bubblegum-pink: #EA4335;
+  --color-porcelain: #F4F7FC;
+  --color-sandy-brown: #FBBC05;
+  --color-evergreen: #1A73E8;
+  --color-carbon-black: #1F2937;
+  --color-onyx: #0B0D17;
+
+  /* Theme Configurations - Coding Platform Design System */
+  --color-primary: #1A73E8;
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-dark: #1557B0;
+  --color-primary-darker: #174EA6;
+  --color-success-green: #1E8E3E;
+  --color-success-green-hover: #137333;
+  --color-warning-amber: #F29900;
+  --color-error-red: #D93025;
+  --color-error-red-hover: #B22222;
+  --color-info-blue: #1A73E8;
+
+  /* Light Mode Specific Colors */
+  --color-background: #E1E5EC;
+  --color-card: #F7F9FC;
+  --color-foreground: #1F2937;
+  --color-muted-foreground: #5F6368;
+  --color-border: #CFD4DB;
+  --color-muted: #EBF0F6;
+  --color-accent: #DCE6F5;
+  --color-ring: #1A73E8;
+
+  --color-chart-1: #1A73E8;
+  --color-chart-2: #1E8E3E;
+  --color-chart-3: #D93025;
+  --color-chart-4: #F29900;
+  --color-chart-5: #1A73E8;
+  --color-popover: #F7F9FC;
+
+  /* Badge Color Vars - Light Mode */
+  --color-badge-success-bg: #E6F4EA;
+  --color-badge-success-text: #137333;
+  --color-badge-success-border: rgba(30, 142, 62, 0.2);
+  --color-badge-warning-bg: #FEF7E0;
+  --color-badge-warning-text: #B06000;
+  --color-badge-warning-border: rgba(242, 153, 0, 0.2);
+  --color-badge-error-bg: #FCE8E6;
+  --color-badge-error-text: #C5221F;
+  --color-badge-error-border: rgba(217, 48, 37, 0.2);
+  --color-badge-info-bg: #E8F0FE;
+  --color-badge-info-text: #1A73E8;
+  --color-badge-info-border: rgba(26, 115, 232, 0.2);
+
+  /* Sidebar styling (White/Grey in Light Mode) */
+  --color-sidebar: #F7F9FC;
+  --color-sidebar-foreground: #5F6368;
+  --color-sidebar-primary: #1A73E8;
+  --color-sidebar-primary-foreground: #FFFFFF;
+  --color-sidebar-border: #CFD4DB;
+  --color-sidebar-accent: #EBF0F6;
+  --color-sidebar-accent-foreground: #1A73E8;
+  --color-sidebar-ring: #1A73E8;
+
+  --font-sans: 'Outfit', 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius: 6px;
+}
+
+/* Premium Dark Mode Override */
+[data-theme='dark'] {
+  --color-wisteria-blue: #4285F4;
+  --color-mint-leaf: #34A853;
+  --color-jasmine: #FBBC05;
+  --color-tangerine-dream: #FBBC05;
+  --color-bubblegum-pink: #EA4335;
+  --color-porcelain: #0B0D17;
+  --color-sandy-brown: #FBBC05;
+  --color-evergreen: #4285F4;
+  --color-carbon-black: #181B28;
+  --color-onyx: #0B0D17;
+
+  /* Swaps primary CTA to Bright Blue in dark mode per guidelines */
+  --color-primary: #4285F4;
+  --color-primary-dark: #357AE8;
+  --color-primary-darker: #2A65C9;
+  --color-primary-foreground: #E8EAED;
+
+  --color-background: #0B0D17;
+  --color-card: #181B28;
+  --color-foreground: #E8EAED;
+  --color-muted-foreground: #9AA0A6;
+  --color-border: #2E313D;
+  --color-muted: #131520;
+  --color-accent: #181B28;
+  --color-ring: #4285F4;
+
+  --color-chart-1: #4285F4;
+  --color-popover: #181B28;
+
+  /* Badge Color Vars - Dark Mode */
+  --color-badge-success-bg: rgba(52, 168, 83, 0.15);
+  --color-badge-success-text: #81C995;
+  --color-badge-success-border: rgba(52, 168, 83, 0.3);
+  --color-badge-warning-bg: rgba(251, 188, 5, 0.15);
+  --color-badge-warning-text: #FDD663;
+  --color-badge-warning-border: rgba(251, 188, 5, 0.3);
+  --color-badge-error-bg: rgba(234, 67, 53, 0.15);
+  --color-badge-error-text: #F28B82;
+  --color-badge-error-border: rgba(234, 67, 53, 0.3);
+  --color-badge-info-bg: rgba(66, 133, 244, 0.15);
+  --color-badge-info-text: #8AB4F8;
+  --color-badge-info-border: rgba(66, 133, 244, 0.3);
+
+  /* Sidebar styling (Deep Space Blue in Dark Mode) */
+  --color-sidebar: #181B28;
+  --color-sidebar-foreground: #9AA0A6;
+  --color-sidebar-primary: #4285F4;
+  --color-sidebar-primary-foreground: #FFFFFF;
+  --color-sidebar-border: #2E313D;
+  --color-sidebar-accent: #131520;
+  --color-sidebar-accent-foreground: #4285F4;
+  --color-sidebar-ring: #4285F4;
+}
+
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-background);
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Global Inputs, Selects and Textareas style */
+  input,
+  select,
+  textarea {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--color-foreground);
+    outline: none;
+    transition: all 0.2s ease-in-out;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(24, 95, 165, 0.15);
+  }
+}
+
+@layer components {
+
+  /* Buttons Setup */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  @media (min-width: 640px) {
+    .btn-primary {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-primary-darker);
+    transform: scale(0.98);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .btn-secondary {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-accent);
+  }
+
+  .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-success {
+    background-color: var(--color-success-green);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .btn-success {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-success:hover {
+    background-color: var(--color-success-green-hover);
+  }
+
+  .btn-success:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-green {
+    background-color: var(--color-success-green);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .btn-green {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-green:hover {
+    background-color: var(--color-success-green-hover);
+  }
+
+  .btn-green:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-danger {
+    background-color: var(--color-error-red);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .btn-danger {
+      padding: 10px 20px;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-danger:hover {
+    background-color: var(--color-error-red-hover);
+  }
+
+  .btn-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Badges Setup */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-width: 1px;
+    transition: all 0.2s ease;
+  }
+
+  .badge-purple,
+  .badge-blue,
+  .badge-info {
+    background-color: var(--color-badge-info-bg);
+    color: var(--color-badge-info-text);
+    border-color: var(--color-badge-info-border);
+  }
+
+  .badge-green,
+  .badge-success {
+    background-color: var(--color-badge-success-bg);
+    color: var(--color-badge-success-text);
+    border-color: var(--color-badge-success-border);
+  }
+
+  .badge-yellow,
+  .badge-warning {
+    background-color: var(--color-badge-warning-bg);
+    color: var(--color-badge-warning-text);
+    border-color: var(--color-badge-warning-border);
+  }
+
+  .badge-red,
+  .badge-error {
+    background-color: var(--color-badge-error-bg);
+    color: var(--color-badge-error-text);
+    border-color: var(--color-badge-error-border);
+  }
+
+  .badge-gray {
+    background-color: var(--color-muted);
+    color: var(--color-muted-foreground);
+    border-color: var(--color-border);
+  }
+
+  /* Toast Alerts Setup */
+  .alert-success {
+    background-color: var(--color-badge-success-bg);
+    border-left: 4px solid var(--color-success-green);
+    color: var(--color-badge-success-text);
+    padding: 12px 16px;
+    border-radius: 4px;
+  }
+
+  .alert-error {
+    background-color: var(--color-badge-error-bg);
+    border-left: 4px solid var(--color-error-red);
+    color: var(--color-badge-error-text);
+    padding: 12px 16px;
+    border-radius: 4px;
+  }
+
+  .alert-warning {
+    background-color: var(--color-badge-warning-bg);
+    border-left: 4px solid var(--color-warning-amber);
+    color: var(--color-badge-warning-text);
+    padding: 12px 16px;
+    border-radius: 4px;
+  }
+
+  .alert-info {
+    background-color: var(--color-badge-info-bg);
+    border-left: 4px solid var(--color-info-blue);
+    color: var(--color-badge-info-text);
+    padding: 12px 16px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  .glass-panel,
+  .card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(90deg, var(--color-primary), var(--color-info-blue), var(--color-warning-amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Custom Code Block Syntax Highlighting */
+.code-block,
+pre,
+code {
+  font-family: var(--font-mono) !important;
+  background-color: #1A1A1A !important;
+  color: #E8E8E8 !important;
+  font-size: 13px !important;
+}
+
+.token.keyword,
+.keyword {
+  color: #BA7517 !important;
+}
+
+.token.string,
+.string {
+  color: #639922 !important;
+}
+
+.token.function,
+.function,
+.token.class-name {
+  color: #378ADD !important;
+}
+
+.token.comment,
+.comment {
+  color: #888780 !important;
+}
+
+/* Base custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* React Flow Dark enhancements */
+.react-flow__controls {
+  background-color: var(--color-card) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.react-flow__controls-button {
+  background-color: transparent !important;
+  border-width: 0 !important;
+  border-bottom-width: 1px !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-foreground) !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: var(--color-muted) !important;
+}
+
+.react-flow__minimap {
+  background-color: var(--color-card) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Global Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-from-top {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-in {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in {
+  animation-name: fade-in;
+}
+
+.slide-in-from-bottom {
+  animation-name: slide-in-from-bottom;
+}
+
+.slide-in-from-top {
+  animation-name: slide-in-from-top;
+}
+
+.zoom-in {
+  animation-name: zoom-in;
+}
+
+.ease-spring {
+  transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
