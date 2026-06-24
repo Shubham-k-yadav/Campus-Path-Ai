@@ -631,28 +631,38 @@ export default function FocusRooms() {
 
       ) : (
         /* ════════════════════════ ACTIVE ROOM ════════════════════════════ */
-        <div className="flex-1 flex flex-col min-h-0 space-y-4 p-4 animate-in zoom-in duration-300">
+        <div className="flex-1 flex flex-col min-h-0 space-y-3 p-3 sm:p-4 animate-in zoom-in duration-300">
 
           {/* Room header bar */}
-          <div className="flex justify-between items-center shrink-0 bg-card border border-border/80 rounded-2xl px-5 py-3 shadow-sm border-t-4"
+          <div className="shrink-0 bg-card border border-border/80 rounded-2xl px-4 py-3 shadow-sm border-t-4"
             style={{ borderTopColor: CATEGORY_META[activeRoom.category]?.color || GOOGLE.blue }}>
-            <div className="flex items-center gap-3">
-              <button onClick={exitRoom}
-                className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors">
-                <ArrowLeft size={14} /> Lobby
-              </button>
-              <span className="w-px h-4 bg-border" />
-              <div>
-                <h2 className="font-bold text-sm text-foreground">{activeRoom.name}</h2>
-                <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
-                  {VIBES[activeRoom.vibe || 'default'].icon} {VIBES[activeRoom.vibe || 'default'].label} Vibe · {CATEGORY_META[activeRoom.category]?.label}
-                </p>
+            {/* Top row: back button + room name */}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <button onClick={exitRoom}
+                  className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors shrink-0">
+                  <ArrowLeft size={14} /> <span className="hidden sm:inline">Lobby</span>
+                </button>
+                <span className="w-px h-4 bg-border shrink-0" />
+                <div className="min-w-0">
+                  <h2 className="font-bold text-sm text-foreground truncate">{activeRoom.name}</h2>
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate">
+                    {VIBES[activeRoom.vibe || 'default'].icon} {VIBES[activeRoom.vibe || 'default'].label} · {CATEGORY_META[activeRoom.category]?.label}
+                  </p>
+                </div>
+              </div>
+              {/* Expiry badge */}
+              <div className="flex items-center gap-1 px-2 py-1 rounded-lg border bg-[#34A853]/5 border-[#34A853]/20 shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#34A853] animate-pulse" />
+                <span className="text-[8px] font-black text-[#34A853] uppercase tracking-widest hidden sm:inline">LIVE · </span>
+                <span className="text-[8px] font-black text-[#34A853] uppercase tracking-widest">{formatCountdown(activeRoom.expiresAt)}</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Bottom row: status + ambience controls */}
+            <div className="flex items-center justify-between gap-2 mt-2.5 pt-2.5 border-t border-border/40">
               {/* My status selector */}
-              <div className="flex gap-1">
+              <div className="flex gap-1 flex-wrap">
                 {Object.entries(STATUS_META).map(([s, meta]) => (
                   <button key={s} onClick={() => changeStatus(s)}
                     className={`text-[8px] font-black px-2 py-1 rounded-full border uppercase tracking-widest transition-all ${
@@ -663,28 +673,23 @@ export default function FocusRooms() {
                 ))}
               </div>
               {/* Ambience */}
-              <div className="flex gap-1">
+              <div className="flex gap-1 shrink-0">
                 {AMBIENCE.map(s => (
                   <button key={s.id} onClick={() => toggleAmbience(s)}
                     className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all ${
                       activeAmbience?.id === s.id
-                        ? `border-[${GOOGLE.blue}] text-[${GOOGLE.blue}] bg-[${GOOGLE.blue}]/10`
+                        ? 'border-primary text-primary bg-primary/10'
                         : 'bg-muted/50 border-border text-muted-foreground hover:bg-muted'
                     }`}>
                     <s.icon size={12} />
                   </button>
                 ))}
               </div>
-              {/* Expiry */}
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg border bg-[#34A853]/5 border-[#34A853]/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#34A853] animate-pulse" />
-                <span className="text-[9px] font-black text-[#34A853] uppercase tracking-widest">LIVE · {formatCountdown(activeRoom.expiresAt)}</span>
-              </div>
             </div>
           </div>
 
           {/* Main content */}
-          <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 overflow-hidden">
+          <div className="flex-1 flex flex-col lg:flex-row gap-3 min-h-0 overflow-hidden">
 
             {/* ── Chat panel ── */}
             <div className="flex-1 flex flex-col bg-card border border-border/80 rounded-2xl shadow-sm overflow-hidden min-h-0 relative">
@@ -753,8 +758,8 @@ export default function FocusRooms() {
               </div>
 
               {/* Input */}
-              <div className="p-4 border-t border-border/50 shrink-0 relative z-10 bg-card/80 backdrop-blur-sm">
-                <div className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
+              <div className="p-3 sm:p-4 border-t border-border/50 shrink-0 relative z-10 bg-card/80 backdrop-blur-sm">
+                <div className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-2 hidden sm:block">
                   Tip: start with ``` for a code block
                 </div>
                 <div className="flex gap-2">
@@ -762,11 +767,11 @@ export default function FocusRooms() {
                     value={input}
                     onChange={handleInputChange}
                     onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
-                    placeholder="Message the collective... (Enter to send)"
-                    className="flex-1 bg-muted/50 border border-border/60 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:border-primary/60 shadow-sm transition-colors"
+                    placeholder="Message... (Enter to send)"
+                    className="flex-1 min-w-0 bg-muted/50 border border-border/60 rounded-xl px-3 py-2.5 text-sm font-medium focus:outline-none focus:border-primary/60 shadow-sm transition-colors"
                   />
                   <button onClick={handleSend}
-                    className="px-5 py-2.5 bg-primary hover:bg-primary/95 text-white rounded-xl font-semibold text-xs transition-all shadow-sm hover:scale-[1.02] active:scale-95">
+                    className="px-4 py-2.5 bg-primary hover:bg-primary/95 text-white rounded-xl font-semibold text-xs transition-all shadow-sm hover:scale-[1.02] active:scale-95 shrink-0">
                     <Send size={15} />
                   </button>
                 </div>
@@ -774,10 +779,10 @@ export default function FocusRooms() {
             </div>
 
             {/* ── Sidebar ── */}
-            <div className="w-full lg:w-72 flex flex-col gap-4 overflow-y-auto shrink-0">
+            <div className="w-full lg:w-72 flex flex-col sm:flex-row lg:flex-col gap-3 overflow-y-auto lg:overflow-y-auto shrink-0">
 
               {/* Pomodoro — Dashboard ring style */}
-              <div className="bg-card border border-border/80 border-t-4 rounded-2xl p-5 shadow-sm flex flex-col items-center"
+              <div className="bg-card border border-border/80 border-t-4 rounded-2xl p-4 shadow-sm flex flex-col items-center flex-1 sm:flex-none lg:flex-none"
                 style={{ borderTopColor: GOOGLE.red }}>
                 <div className="w-full flex justify-between items-start mb-4">
                   <div>
@@ -839,7 +844,7 @@ export default function FocusRooms() {
               </div>
 
               {/* Attendees — Dashboard metric cell style */}
-              <div className="bg-card border border-border/80 border-t-4 rounded-2xl p-4 shadow-sm flex flex-col flex-1 min-h-0"
+              <div className="bg-card border border-border/80 border-t-4 rounded-2xl p-4 shadow-sm flex flex-col flex-1 min-h-[160px] lg:min-h-0"
                 style={{ borderTopColor: GOOGLE.green }}>
                 <div className="mb-3">
                   <span className="px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border"
