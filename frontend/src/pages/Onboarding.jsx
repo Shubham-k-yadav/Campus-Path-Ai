@@ -8,6 +8,7 @@ import { Zap, ChevronRight, ChevronLeft, Check, User, Clock, Code, Globe, Flame,
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import AILoader from '@/components/common/AILoader';
 
 const HOURS = [5, 10, 15, 20, 30];
 const TECHS = ['JavaScript', 'TypeScript', 'Python', 'Go', 'Rust', 'Java', 'C++', 'Ruby', 'PHP', 'Kotlin', 'Swift', 'Dart'];
@@ -204,6 +205,10 @@ export default function Onboarding() {
       ? 'bg-[#181B28]/50 border-[#2E313D] hover:bg-[#181B28]' 
       : 'bg-card border border-border hover:bg-muted'
   };
+
+  if (loading) {
+    return <AILoader targetRole={data.targetRole} githubUsername={data.githubUsername} />;
+  }
 
   return (
     <div className={`min-h-screen ${colors.bg} ${colors.text} relative flex items-center justify-center p-4 sm:p-6 overflow-hidden transition-colors duration-300`}>

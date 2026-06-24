@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
+import AILoader from '@/components/common/AILoader';
 
 export default function RoadmapViewer() {
   const { user } = useAuth();
@@ -311,6 +312,10 @@ export default function RoadmapViewer() {
       </AnimatePresence>
     );
   };
+
+  if (generating) {
+    return <AILoader targetRole={user?.targetRole} githubUsername={user?.githubUsername} />;
+  }
 
   if (loading) return <div className="flex items-center justify-center min-h-[60vh]"><RefreshCw className="animate-spin text-primary" size={32} /></div>;
 

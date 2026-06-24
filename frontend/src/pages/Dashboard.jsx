@@ -13,6 +13,7 @@ import ContributionHeatmap from '@/components/features/github/ContributionHeatma
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import AILoader from '@/components/common/AILoader';
 
 function DashboardSkeleton() {
   return (
@@ -83,6 +84,10 @@ export default function Dashboard() {
   }, []);
 
   if (loadingRoadmaps) return <DashboardSkeleton />;
+
+  if (generating) {
+    return <AILoader targetRole={user?.targetRole} githubUsername={user?.githubUsername} />;
+  }
 
   const activeRoadmap = Array.isArray(roadmaps) ? roadmaps[0] : null;
   const readiness = activeRoadmap?.completionPercentage ?? 0;
